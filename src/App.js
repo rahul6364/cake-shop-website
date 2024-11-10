@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Homepage from './pages/Homepage';
+import CakeCategories from './pages/Cakecategories';
+import CakeDetails from './pages/Cakedetails';
+import Cart from './pages/Cart';
+import AboutUs from './pages/AboutUs';
+import './styles/main.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [cart, setCart] = useState([]);
+
+    const addToCart = (cake) => {
+        setCart((prevCart) => [...prevCart, cake]);
+    };
+
+    return (
+        <Router>
+            <Navbar />
+            <div className="app-content">
+                <Routes>
+                    <Route path="/" element={<Homepage addToCart={addToCart} />} />
+                    <Route path="/categories" element={<CakeCategories addToCart={addToCart} />} />
+                    <Route path="/cakes/:cakeId" element={<CakeDetails addToCart={addToCart} />} />
+                    <Route path="/cart" element={<Cart cart={cart} />} />
+                    <Route path="/about" element={<AboutUs />} />
+                </Routes>
+            </div>
+            <Footer />
+        </Router>
+    );
+};
 
 export default App;
